@@ -73,7 +73,7 @@ if [ -n "$_WINEPATH" ]; then
 fi
 
 if [ "$CALL_WINETRICKS" = true ]; then
-    winetricks "${ARGS}"
+    winetricks "${ARGS[@]}"
 elif [ "$CALL_CONSOLE" = true ]; then
     wineconsole
 elif [ "$CALL_SHUTDOWN" = true ]; then
@@ -83,7 +83,7 @@ elif [ "$CALL_REBOOT" = true ]; then
 elif [ "$CALL_KILL" = true ]; then
     wineserver -k
 elif [ "$CALL_WINEBOOT" = true ]; then
-    wineboot "${ARGS}"
+    wineboot "${ARGS[@]}"
 else
-    $_WINEBIN "${ARGS}"
+    $_WINEBIN "${ARGS[@]}"
 fi

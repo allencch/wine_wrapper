@@ -66,10 +66,10 @@ function setup_env() {
 
 if [ "$CALL_WINETRICKS" = true ]; then
     setup_env
-    winetricks "${ARGS}"
+    winetricks "${ARGS[@]}"
 elif [ "$CALL_WINE" = true ]; then
     setup_env
-    "$_PROTON_DIR/dist/bin/wine" "${ARGS}"
+    "$_PROTON_DIR/dist/bin/wine" "${ARGS[@]}"
 elif [ "$CALL_SHUTDOWN" = true ]; then
     "$_PROTON" run wineboot -s
 elif [ "$CALL_REBOOT" = true ]; then
@@ -77,7 +77,7 @@ elif [ "$CALL_REBOOT" = true ]; then
 elif [ "$CALL_KILL" = true ]; then
     "$_PROTON" run wineserver -k
 elif [ "$CALL_WINEBOOT" = true ]; then
-    "$_PROTON" run wineboot "${ARGS}"
+    "$_PROTON" run wineboot "${ARGS[@]}"
 else
-    "$_PROTON" run "${ARGS}"
+    "$_PROTON" run "${ARGS[@]}"
 fi
