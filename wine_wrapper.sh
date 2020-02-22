@@ -53,6 +53,10 @@ while [ "$1" != "" ]; do
         --wineboot)
             CALL_WINEBOOT=true
             ;;
+        --dll)
+            shift
+            _WINEDLLOVERRIDES+=";$1"
+            ;;
         *)
             ARGS+=("$1")
     esac
