@@ -9,7 +9,6 @@ CALL_WINEBOOT=false
 CALL_WINE=false
 ARGS=()
 
-echo "$#"
 if [ "$#" -le "1" ] ; then
     echo -e "Usage: proton_wrapper.sh -p <wineprefix> -v <version> arguments ..."
     exit
