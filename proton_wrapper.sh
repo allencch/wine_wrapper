@@ -42,6 +42,10 @@ while [ "$1" != "" ]; do
         --wine)
             CALL_WINE=true
             ;;
+        --dll)
+            shift
+            _WINEDLLOVERRIDES+=";$1"
+            ;;
         *)
             ARGS+=("$1")
     esac
