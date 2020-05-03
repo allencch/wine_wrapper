@@ -1,5 +1,6 @@
 #!/bin/bash
 _PROTON_VERSION=5.0
+_WINEDLLOVERRIDES=""
 CALL_WINETRICKS=false
 CALL_CONSOLE=false
 CALL_SHUTDOWN=false
@@ -57,6 +58,8 @@ fi
 export STEAM_COMPAT_DATA_PATH="$_WINEPREFIX"
 export _PROTON_DIR="$HOME/.steam/steam/steamapps/common/Proton $_PROTON_VERSION"
 export _PROTON="$_PROTON_DIR/proton"
+
+export WINEDLLOVERRIDES="$_WINEDLLOVERRIDES"
 
 function setup_env() {
     export WINEPREFIX="$_WINEPREFIX/pfx"
