@@ -51,13 +51,13 @@ firejail --noprofile --net=none /path/to/wine_wrapper.sh -p "$base" explorer
 Let's say we downloaded different version of Wine through PlayOnLinux, or custom built Wine,
 
 ```
-/path/to/wine_wrapper.sh -p ""$base" --winepath ~/.PlayOnLinux/wine/linux-x64/4.11 my_games.exe
+/path/to/wine_wrapper.sh -p "$base" --winepath ~/.PlayOnLinux/wine/linux-x64/4.11 my_games.exe
 ```
 
 Let's say the downloaded ed wine is 32-bit,
 
 ```
-/path/to/wine_wrapper.sh --win32 -p ""$base" --winepath ~/.PlayOnLinux/wine/linux-x86/4.11 my_games.exe
+/path/to/wine_wrapper.sh --win32 -p "$base" --winepath ~/.PlayOnLinux/wine/linux-x86/4.11 my_games.exe
  ```
 
 ## Build custom Wine and support both 64-bit and 32-bit
