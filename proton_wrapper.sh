@@ -34,6 +34,7 @@ while [ "$1" != "" ]; do
             CALL_WINEBOOT=true
             ;;
         --version)
+            shift
             _PROTON_VERSION="$1"
             ;;
         --winetricks)
