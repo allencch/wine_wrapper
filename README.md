@@ -54,7 +54,7 @@ Let's say we downloaded different version of Wine through PlayOnLinux, or custom
 /path/to/wine_wrapper.sh -p "$base" --winepath ~/.PlayOnLinux/wine/linux-x64/4.11 my_games.exe
 ```
 
-Let's say the downloaded ed wine is 32-bit,
+Let's say the downloaded wine is 32-bit,
 
 ```
 /path/to/wine_wrapper.sh --win32 -p "$base" --winepath ~/.PlayOnLinux/wine/linux-x86/4.11 my_games.exe
