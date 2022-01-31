@@ -74,19 +74,20 @@ Then we can build the Wine that supports both architecture, assuming we are in t
 ```
 #!/bin/bash
 
+WINENAME="wine-4.2-sw-blend"
 srcdir="$(pwd)"
 mkdir build-64 build-32
 
 cd "$srcdir/build-64"
-../configure --prefix=$HOME/mywines/wines/wine-4.2-sw-blend \
-  --libdir=$HOME/mywines/wines/wine-4.2-sw-blend/lib \
+../configure --prefix=$HOME/mywines/$WINENAME \
+  --libdir=$HOME/mywines/$WINENAME/lib \
   --enable-win64 --with-x
 make -j4
 cd "$srcdir/build-32"
 PKG_CONFIG_PATH=/usr/lib32/pkgconfig ../configure \
-  --prefix=$HOME/mywines/wines/wine-4.2-sw-blend \
-  --libdir=$HOME/mywines/wines/wine-4.2-sw-blend/lib32 \
-  --with-wine64=$HOME/mywines/builds/wine-4.2/build-64 \
+  --prefix=$HOME/mywines/$WINENAME \
+  --libdir=$HOME/mywines/$WINENAME/lib32 \
+  --with-wine64=$srcdir/build-64 \
   --with-x
 make -j4
 
