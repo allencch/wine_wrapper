@@ -117,6 +117,28 @@ To use different version of Proton (default is 4.11),
 
 Note that, Proton creates slightly different file structure as `$base/pfx/drive_c`, while the usual Wine creates as `$base/drive_c`.
 
+## Proton version 5.0 and above
+
+`steam.exe` in Proton 5.0 and above doesn't work with arguments, like `notepad test.txt`.
+We can either solve it by invoking a `.bat` file to wrap the argument, or edit the `proton` script.
+
+To use `.bat` file, eg,
+
+```
+; mynotepad.bat
+notepad test.txt
+```
+
+Then run with `mynotepad.bat`
+
+To edit the `proton` script, look for line involves
+
+```
+self.run_proc([g_proton.wine64_bin, "steam"] + sys.argv[2:] + self.cmdlineappend)
+```
+
+Remove `steam` and save it. So that proton will run directly using the `wine.exe` instead through `steam.exe`.
+
 
 # Create shortcut
 
