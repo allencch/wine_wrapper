@@ -139,6 +139,8 @@ self.run_proc([g_proton.wine64_bin, "steam"] + sys.argv[2:] + self.cmdlineappend
 
 Remove `steam` and save it. So that proton will run directly using the `wine.exe` instead through `steam.exe`.
 
+In order to make the original proton script continue to work, the edited file is recommended to save as `proton_lite`.
+
 
 # Create shortcut
 

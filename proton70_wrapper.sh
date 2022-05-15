@@ -59,7 +59,7 @@ fi
 export STEAM_COMPAT_DATA_PATH="$_WINEPREFIX"
 export STEAM_COMPAT_CLIENT_INSTALL_PATH="$HOME/.steam/steam"
 export _PROTON_DIR="$HOME/.steam/steam/steamapps/common/Proton $_PROTON_VERSION"
-export _PROTON="$_PROTON_DIR/proton"
+export _PROTON="$_PROTON_DIR/proton_lite"
 
 export WINEDLLOVERRIDES="$_WINEDLLOVERRIDES"
 
