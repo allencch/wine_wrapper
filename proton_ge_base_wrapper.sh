@@ -9,7 +9,7 @@
 # sh "./proton_ge_base_wrapper.sh" "$@"
 
 
-_PROTON_GE="${_BASE_PATH}/proton"
+_PROTON_GE="${_BASE_PATH}/proton_lite"
 _PROTON_GE_DIR="${_BASE_PATH}/files"
 export STEAM_COMPAT_CLIENT_INSTALL_PATH="/tmp"
 
