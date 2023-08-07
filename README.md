@@ -58,7 +58,7 @@ Let's say the downloaded wine is 32-bit,
 
 ```
 /path/to/wine_wrapper.sh --win32 -p "$base" --winepath ~/.PlayOnLinux/wine/linux-x86/4.11 my_games.exe
- ```
+```
 
 ## Build custom Wine and support both 64-bit and 32-bit
 
