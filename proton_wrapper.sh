@@ -1,41 +1,46 @@
 #!/bin/bash
-_PROTON_VERSION=4.11
+
+# Re-write with Gemini and ChatGPT
+
+# Configuration
+# Expects _BASE_PATH to be set by the caller (e.g., GE-Proton9-11 folder)
+_PROTON_BIN="${_BASE_PATH}/proton"
+_PROTON_DIR="${_BASE_PATH}/files"
+
+# Required by Proton to run outside of Steam
+export STEAM_COMPAT_CLIENT_INSTALL_PATH="/tmp"
+export STEAM_COMPAT_DATA_PATH="" # Will be set by -p argument
+
+# Internal variables
 _WINEDLLOVERRIDES=""
 CALL_WINETRICKS=false
-CALL_CONSOLE=false
 CALL_SHUTDOWN=false
-CALL_REBOOT=false
 CALL_KILL=false
 CALL_WINEBOOT=false
 CALL_WINE=false
 ARGS=()
 
 if [ "$#" -le "1" ] ; then
-    echo -e "Usage: proton_wrapper.sh -p <wineprefix> -v <version> arguments ..."
-    exit
+    echo -e "Usage: proton_wrapper.sh -p <wineprefix> [options] arguments ..."
+    exit 1
 fi
 
+# Parse Arguments
 while [ "$1" != "" ]; do
     case $1 in
         -p | --prefix)
             shift
-            _WINEPREFIX="$1"
+            _WINEPREFIX="$(realpath "$1")"
+            export STEAM_COMPAT_DATA_PATH="$_WINEPREFIX"
             ;;
         --shutdown)
             CALL_SHUTDOWN=true
-            ;;
-        --reboot)
-            CALL_REBOOT=true
             ;;
         --kill)
             CALL_KILL=true
             ;;
         --wineboot)
             CALL_WINEBOOT=true
-            ;;
-        --version)
-            shift
-            _PROTON_VERSION="$1"
             ;;
         --winetricks)
             CALL_WINETRICKS=true
@@ -45,46 +50,59 @@ while [ "$1" != "" ]; do
             ;;
         --dll)
             shift
-            _WINEDLLOVERRIDES+=";$1"
+            # Append DLL overrides, ensuring they are comma-separated
+            if [ -z "$_WINEDLLOVERRIDES" ]; then
+                _WINEDLLOVERRIDES="$1"
+            else
+                _WINEDLLOVERRIDES="$_WINEDLLOVERRIDES,$1"
+            fi
             ;;
         *)
             ARGS+=("$1")
+            ;;
     esac
     shift
 done
 
+# Ensure prefix directory exists
 if [ ! -d "$_WINEPREFIX" ]; then
     mkdir -p "$_WINEPREFIX"
 fi
-export STEAM_COMPAT_DATA_PATH="$_WINEPREFIX"
-export _PROTON_DIR="$HOME/.steam/steam/steamapps/common/Proton $_PROTON_VERSION"
-export _PROTON="$_PROTON_DIR/proton"
 
-export WINEDLLOVERRIDES="$_WINEDLLOVERRIDES"
-
+# Environment Setup Function
 function setup_env() {
+    # Proton expects the actual wine prefix to be in a subfolder named 'pfx'
     export WINEPREFIX="$_WINEPREFIX/pfx"
-    export PATH="$_PROTON_DIR/dist/bin:$PATH"
-    export LD_LIBRARY_PATH="$_PROTON_DIR/dist/lib:$_PROTON_DIR/dist/lib64:$LD_LIBRARY_PATH"
-    export WINEDLLPATH="$_PROTON_DIR/dist/lib/wine/fakedlls:$_PROTON_DIR/dist/lib64/wine/fakedlls"
-    export WINEDEBUG=fixme-all
+
+    # Standard paths for GE-Proton
+    export PATH="$_PROTON_DIR/bin:$PATH"
+    export LD_LIBRARY_PATH="$_PROTON_DIR/lib:$_PROTON_DIR/lib64:$LD_LIBRARY_PATH"
+
+    # Apply DLL Overrides if any
+    if [ -n "$_WINEDLLOVERRIDES" ]; then
+        export WINEDLLOVERRIDES="$_WINEDLLOVERRIDES"
+    fi
+
+    # Useful for debugging
+    # export WINEDEBUG=-all,err+all
 }
 
-
-if [ "$CALL_WINETRICKS" = true ]; then
+# Logic Execution
+if [ "$CALL_KILL" = true ]; then
+    setup_env
+    wineserver -k
+elif [ "$CALL_SHUTDOWN" = true ]; then
+    setup_env
+    wineserver -s
+elif [ "$CALL_WINETRICKS" = true ]; then
     setup_env
     winetricks "${ARGS[@]}"
-elif [ "$CALL_WINE" = true ]; then
-    setup_env
-    "$_PROTON_DIR/dist/bin/wine" "${ARGS[@]}"
-elif [ "$CALL_SHUTDOWN" = true ]; then
-    "$_PROTON" run wineboot -s
-elif [ "$CALL_REBOOT" = true ]; then
-    "$_PROTON" run wineboot -r
-elif [ "$CALL_KILL" = true ]; then
-    "$_PROTON" run wineserver -k
 elif [ "$CALL_WINEBOOT" = true ]; then
-    "$_PROTON" run wineboot "${ARGS[@]}"
-else
-    "$_PROTON" run "${ARGS[@]}"
+    setup_env
+    wineboot -u
+elif [ "$CALL_WINE" = true ] || [ ${#ARGS[@]} -gt 0 ]; then
+    setup_env
+    # UMU Style: Use the 'runinprefix' verb to bypass the need for 'steam.exe'
+    # This allows passing arguments directly to the .exe
+    "$_PROTON_BIN" run "${ARGS[@]}"
 fi
