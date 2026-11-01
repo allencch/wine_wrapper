@@ -54,7 +54,7 @@ while [ "$1" != "" ]; do
             if [ -z "$_WINEDLLOVERRIDES" ]; then
                 _WINEDLLOVERRIDES="$1"
             else
-                _WINEDLLOVERRIDES="$_WINEDLLOVERRIDES,$1"
+                _WINEDLLOVERRIDES="$_WINEDLLOVERRIDES;$1"
             fi
             ;;
         *)
